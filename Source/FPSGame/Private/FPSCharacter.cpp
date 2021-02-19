@@ -44,6 +44,8 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
 	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("SpawnBomb", IE_Pressed, this, &AFPSCharacter::SpawnBomb);
 }
 
 
@@ -81,6 +83,11 @@ void AFPSCharacter::Fire()
 			AnimInstance->PlaySlotAnimationAsDynamicMontage(FireAnimation, "Arms", 0.0f);
 		}
 	}
+}
+
+void AFPSCharacter::SpawnBomb()
+{
+	AActor* myBomb = GetWorld()->SpawnActor<AActor>(BombClass, GetActorLocation(), GetActorRotation());
 }
 
 

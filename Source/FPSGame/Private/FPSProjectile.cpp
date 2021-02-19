@@ -44,6 +44,7 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 
 		if (Scale.GetMin() < .5f)
 		{
+
 			OtherActor->Destroy();
 		}
 		else
