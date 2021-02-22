@@ -44,7 +44,10 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 
 		if (Scale.GetMin() < .5f)
 		{
-
+			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
+			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
+			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
+			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
 			OtherActor->Destroy();
 		}
 		else
@@ -60,4 +63,10 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 
 		Destroy();
 	}
+}
+
+void AFPSProjectile::SpawnObject(FVector Loc, FRotator Rot)
+{
+	FActorSpawnParameters SpawnParams;
+	AActor* ActorSpawnRef = GetWorld()->SpawnActor<AActor>(ActorToSpawn, Loc, Rot, SpawnParams);
 }
