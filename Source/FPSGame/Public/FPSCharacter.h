@@ -4,12 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "AFPSBombActor.h"
 #include "FPSCharacter.generated.h"
+
 
 class UInputComponent;
 class USkeletalMeshComponent;
 class UCameraComponent;
 class AFPSProjectile;
+class AAFPSBombActor;
 class USoundBase;
 class UAnimSequence;
 
@@ -41,7 +44,7 @@ public:
 	TSubclassOf<AFPSProjectile> ProjectileClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Bombs")
-	TSubclassOf<AActor> BombClass;
+	TSubclassOf<AAFPSBombActor> BombClass;
 
 	/** Sound to play each time we fire */
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")

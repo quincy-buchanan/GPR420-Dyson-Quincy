@@ -87,7 +87,9 @@ void AFPSCharacter::Fire()
 
 void AFPSCharacter::SpawnBomb()
 {
-	AActor* myBomb = GetWorld()->SpawnActor<AActor>(BombClass, GetActorLocation(), GetActorRotation());
+	UE_LOG(LogTemp, Warning, TEXT("Spawn Bomb."));
+
+	AAFPSBombActor* myBomb = GetWorld()->SpawnActor<AAFPSBombActor>(BombClass, GetActorLocation(), GetActorRotation());
 }
 
 
