@@ -28,6 +28,9 @@ protected:
 
 	UFUNCTION()
 	void SpawnObject(FVector Loc, FRotator Rot);
+	
+	UFUNCTION()
+	void SpawnExplodingBlock(FVector Loc, FRotator Rot);
 
 public:
 
@@ -35,6 +38,9 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
 	TSubclassOf<AActor> ActorToSpawn;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	TSubclassOf<AActor> ExplodingBlock;
 
 	/** called when projectile hits something */
 	UFUNCTION()
