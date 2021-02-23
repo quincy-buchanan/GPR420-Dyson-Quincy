@@ -2,6 +2,7 @@
 
 #include "FPSProjectile.h"
 #include "GameFramework/ProjectileMovementComponent.h"
+#include "ExplodingBlock.h"
 #include "Components/SphereComponent.h"
 
 AFPSProjectile::AFPSProjectile() 
@@ -37,28 +38,34 @@ void AFPSProjectile::OnHit(UPrimitiveComponent* HitComp, AActor* OtherActor, UPr
 	// Only add impulse and destroy projectile if we hit a physics
 	if ((OtherActor != NULL) && (OtherActor != this) && (OtherComp != NULL) && OtherComp->IsSimulatingPhysics())
 	{
-		OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
-
-		FVector Scale = OtherComp->GetComponentScale();
-		Scale *= .8f;
-
-		if (Scale.GetMin() < .5f)
+		if (OtherActor->IsA(AExplodingBlock::StaticClass()))
 		{
-			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
-			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
-			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
-			SpawnObject(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
-			OtherActor->Destroy();
+			((AExplodingBlock*)OtherActor)->Explode();
 		}
 		else
 		{
-			OtherComp->SetWorldScale3D(Scale);
-		}
+			OtherComp->AddImpulseAtLocation(GetVelocity() * 100.0f, GetActorLocation());
 
-		UMaterialInstanceDynamic* MatInst = OtherComp->CreateAndSetMaterialInstanceDynamic(0);
-		if (MatInst)
-		{
-			MatInst->SetVectorParameterValue("Color", FLinearColor::MakeRandomColor());
+			FVector Scale = OtherComp->GetComponentScale();
+			Scale *= .8f;
+			if (Scale.GetMin() < .5f)
+			{
+				SpawnExplodingBlock(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
+				SpawnExplodingBlock(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
+				SpawnExplodingBlock(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
+				SpawnExplodingBlock(OtherActor->GetActorLocation(), OtherActor->GetTransform().GetRotation().Rotator());
+				OtherActor->Destroy();
+			}
+			else
+			{
+				OtherComp->SetWorldScale3D(Scale);
+			}
+
+			UMaterialInstanceDynamic* MatInst = OtherComp->CreateAndSetMaterialInstanceDynamic(0);
+			if (MatInst)
+			{
+				MatInst->SetVectorParameterValue("Color", FLinearColor::MakeRandomColor());
+			}
 		}
 
 		Destroy();
@@ -69,4 +76,10 @@ void AFPSProjectile::SpawnObject(FVector Loc, FRotator Rot)
 {
 	FActorSpawnParameters SpawnParams;
 	AActor* ActorSpawnRef = GetWorld()->SpawnActor<AActor>(ActorToSpawn, Loc, Rot, SpawnParams);
+}
+
+void AFPSProjectile::SpawnExplodingBlock(FVector Loc, FRotator Rot)
+{
+	FActorSpawnParameters SpawnParams;
+	AExplodingBlock* ActorSpawnRef = GetWorld()->SpawnActor<AExplodingBlock>(ExplodingBlock, Loc, Rot, SpawnParams);
 }
