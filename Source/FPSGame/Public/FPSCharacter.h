@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "FPSAltProjectile.h"
 #include "AFPSBombActor.h"
 #include "FPSCharacter.generated.h"
 
@@ -12,6 +13,7 @@ class UInputComponent;
 class USkeletalMeshComponent;
 class UCameraComponent;
 class AFPSProjectile;
+class AFPSAltProjectile;
 class AAFPSBombActor;
 class USoundBase;
 class UAnimSequence;
@@ -43,6 +45,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category="Projectile")
 	TSubclassOf<AFPSProjectile> ProjectileClass;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Projectile")
+	TSubclassOf<AFPSAltProjectile> AltProjectileClass;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Bombs")
 	TSubclassOf<AAFPSBombActor> BombClass;
 
@@ -59,6 +64,15 @@ protected:
 	/** Fires a projectile. */
 	void Fire();
 
+	void Fire2();
+
+	void FireAlt();
+
+	void FireAltRelease();
+
+	UFUNCTION()
+	void Garbage(); //does nothing but timer won't work without it
+
 	void SpawnBomb();
 
 	/** Handles moving forward/backward */
@@ -68,6 +82,8 @@ protected:
 	void MoveRight(float Val);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+
+	FTimerHandle mCooldown, mCharging;
 
 public:
 	/** Returns Mesh1P subobject **/

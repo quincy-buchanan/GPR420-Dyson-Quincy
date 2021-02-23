@@ -26,6 +26,7 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Movement")
 	UProjectileMovementComponent* ProjectileMovement;
 
+
 	UFUNCTION()
 	void SpawnObject(FVector Loc, FRotator Rot);
 	
