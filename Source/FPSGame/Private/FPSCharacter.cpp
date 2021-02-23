@@ -87,25 +87,56 @@ void AFPSCharacter::Fire()
 	}
 }
 
+void AFPSCharacter::Fire2()
+{
+	GetWorld()->GetTimerManager().SetTimer(mCooldown, this, &AFPSCharacter::Garbage, 3.0f, false);
+	// try and fire a projectile
+	if (ProjectileClass)
+	{
+		// Grabs location from the mesh that must have a socket called "Muzzle" in his skeleton
+		FVector MuzzleLocation = GunMeshComponent->GetSocketLocation("Muzzle");
+		// Use controller rotation which is our view direction in first person
+		FRotator MuzzleRotation = GetControlRotation();
+
+		//Set Spawn Collision Handling Override
+		FActorSpawnParameters ActorSpawnParams;
+		ActorSpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+
+		// spawn the projectile at the muzzle
+		GetWorld()->SpawnActor<AFPSProjectile>(ProjectileClass, MuzzleLocation, MuzzleRotation, ActorSpawnParams);
+	}
+
+	// try and play the sound if specified
+	if (FireSound)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, FireSound, GetActorLocation());
+	}
+
+	// try and play a firing animation if specified
+	if (FireAnimation)
+	{
+		// Get the animation object for the arms mesh
+		UAnimInstance* AnimInstance = Mesh1PComponent->GetAnimInstance();
+		if (AnimInstance)
+		{
+			AnimInstance->PlaySlotAnimationAsDynamicMontage(FireAnimation, "Arms", 0.0f, 0.25f, .25f);
+		}
+	}
+}
+
 void AFPSCharacter::FireAlt()
 {
-	if (GetWorld()->GetTimerManager().GetTimerRemaining(mCooldown) > 0.0f)
+	if (GetWorld()->GetTimerManager().GetTimerRemaining(mCooldown) <= 0.0f)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("GOOD SHIT"));
-		mCharge += GetWorld()->GetDeltaSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f"), mCharge);
-		if (mCharge > 3.0f)
-		{
-			//TODO
-		}
+		GetWorld()->GetTimerManager().SetTimer(mCharging, this, &AFPSCharacter::Fire2, 1.5f, false);
 	}
 }
 
 void AFPSCharacter::FireAltRelease()
 {
 	UE_LOG(LogTemp, Warning, TEXT("FUCK SHIT"));
-	mCharge = 0.0f;
-	GetWorld()->GetTimerManager().SetTimer(mCooldown, this, &AFPSCharacter::Garbage, 3.0f, false);
+	GetWorld()->GetTimerManager().PauseTimer(mCharging);
 }
 
 void AFPSCharacter::SpawnBomb()

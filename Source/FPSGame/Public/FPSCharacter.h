@@ -59,6 +59,8 @@ protected:
 	/** Fires a projectile. */
 	void Fire();
 
+	void Fire2();
+
 	void FireAlt();
 
 	void FireAltRelease();
@@ -76,9 +78,7 @@ protected:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
-	float mCharge = 0.0f;
-	bool mbCharged = false;
-	FTimerHandle mCooldown;
+	FTimerHandle mCooldown, mCharging;
 
 public:
 	/** Returns Mesh1P subobject **/
