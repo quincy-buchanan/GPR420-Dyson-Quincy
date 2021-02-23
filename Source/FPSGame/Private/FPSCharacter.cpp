@@ -38,6 +38,8 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &AFPSCharacter::Fire);
+	PlayerInputComponent->BindAction("FireAlt", IE_Pressed, this, &AFPSCharacter::FireAlt);
+	PlayerInputComponent->BindAction("FireAltRelease", IE_Released, this, &AFPSCharacter::FireAltRelease);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFPSCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFPSCharacter::MoveRight);
@@ -85,6 +87,27 @@ void AFPSCharacter::Fire()
 	}
 }
 
+void AFPSCharacter::FireAlt()
+{
+	if (GetWorld()->GetTimerManager().GetTimerRemaining(mCooldown) > 0.0f)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("GOOD SHIT"));
+		mCharge += GetWorld()->GetDeltaSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f"), mCharge);
+		if (mCharge > 3.0f)
+		{
+			//TODO
+		}
+	}
+}
+
+void AFPSCharacter::FireAltRelease()
+{
+	UE_LOG(LogTemp, Warning, TEXT("FUCK SHIT"));
+	mCharge = 0.0f;
+	GetWorld()->GetTimerManager().SetTimer(mCooldown, this, &AFPSCharacter::Garbage, 3.0f, false);
+}
+
 void AFPSCharacter::SpawnBomb()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Spawn Bomb."));
@@ -110,4 +133,9 @@ void AFPSCharacter::MoveRight(float Value)
 		// add movement in that direction
 		AddMovementInput(GetActorRightVector(), Value);
 	}
+}
+
+void AFPSCharacter::Garbage()
+{
+	return;
 }

@@ -59,6 +59,13 @@ protected:
 	/** Fires a projectile. */
 	void Fire();
 
+	void FireAlt();
+
+	void FireAltRelease();
+
+	UFUNCTION()
+	void Garbage(); //does nothing but timer won't work without it
+
 	void SpawnBomb();
 
 	/** Handles moving forward/backward */
@@ -68,6 +75,10 @@ protected:
 	void MoveRight(float Val);
 
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
+
+	float mCharge = 0.0f;
+	bool mbCharged = false;
+	FTimerHandle mCooldown;
 
 public:
 	/** Returns Mesh1P subobject **/
