@@ -8,6 +8,12 @@
 #include "Kismet/GameplayStatics.h"
 #include "Animation/AnimSequence.h"
 
+#include "ParticleHelper.h"
+#include "Particles/ParticleSystem.h"
+#include "Particles/ParticleSystemComponent.h"
+
+
+
 
 AFPSCharacter::AFPSCharacter()
 {
@@ -28,6 +34,14 @@ AFPSCharacter::AFPSCharacter()
 	GunMeshComponent = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FP_Gun"));
 	GunMeshComponent->CastShadow = false;
 	GunMeshComponent->SetupAttachment(Mesh1PComponent, "GripPoint");
+
+	FSubDelegateName sd1, sd2, sd3;
+	sd1.BindUFunction(this, FName("SpawnExplosionClose"));
+	sd2.BindUFunction(this, FName("SpawnExplosionMedium"));
+	sd3.BindUFunction(this, FName("SpawnExplosionFar"));
+	myDelegate.Add(sd1);
+	myDelegate.Add(sd2);
+	myDelegate.Add(sd3);
 }
 
 
@@ -41,7 +55,8 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("FireAlt", IE_Pressed, this, &AFPSCharacter::FireAlt);
 	PlayerInputComponent->BindAction("FireAltRelease", IE_Released, this, &AFPSCharacter::FireAltRelease);
 
-	PlayerInputComponent->BindAction("TimerDelegate", IE_Pressed, this, &AFPSCharacter::BeginDestructionSequence);
+	PlayerInputComponent->BindAction("TimerDelegate", IE_Released, this, &AFPSCharacter::BeginDestructionSequence);
+	PlayerInputComponent->BindAction("TimerDelegateHold", IE_Pressed, this, &AFPSCharacter::ChargeDestructionSequence);
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFPSCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFPSCharacter::MoveRight);
@@ -56,7 +71,7 @@ void AFPSCharacter::BeginDestructionSequence()
 {
 	FTimerHandle Timer;
 	FTimerDelegate TimerDel;
-	float RandomScale = FMath::RandRange(1.0f, 5.0f);
+	float RandomScale = FMath::RandRange(1.0f, 1.0f + (GetWorld()->GetTimeSeconds() - chargeTimeStamp2));
 
 	TimerDel.BindUFunction(this, FName("ActivateDestructionSequence"), RandomScale);
 
@@ -71,11 +86,37 @@ void AFPSCharacter::BeginDestructionSequence()
 void AFPSCharacter::ActivateDestructionSequence(float _Scale)
 {
 	if (ActorsToDestroy.Num() == 0) return;
+
+	
+
 	uint8 Length = ActorsToDestroy.Num();
 	for (size_t i = 0; i < Length; i++)
 	{
-		
+		if (ActorsToDestroy[i] != nullptr)
+		{
+			ActorsToDestroy[i]->SetActorHiddenInGame(true);
+			PlayExplosionEffect(_Scale, ActorsToDestroy[i]->GetActorLocation());
+			
+			
+		}
 	}
+
+	myDelegate.Broadcast(_Scale);
+}
+
+void AFPSCharacter::SpawnExplosionClose(float scale)
+{
+	PlayExplosionEffect(scale, this->GetActorLocation() + FVector(150.f, 150.f, 0.f));
+}
+
+void AFPSCharacter::SpawnExplosionMedium(float scale)
+{
+	PlayExplosionEffect(scale, this->GetActorLocation() + FVector(-150.f, 150.f, 0.f));
+}
+
+void AFPSCharacter::ChargeDestructionSequence()
+{
+	chargeTimeStamp2 = GetWorld()->GetTimeSeconds();
 }
 
 void AFPSCharacter::Fire()
@@ -164,6 +205,23 @@ void AFPSCharacter::FireAltRelease()
 	GetWorld()->GetTimerManager().PauseTimer(mCharging);
 }
 
+void AFPSCharacter::PlayExplosionEffect(float size, const FVector& location)
+{
+	if (ExplosionEffect != nullptr)
+	{
+		UParticleSystemComponent* PS = UGameplayStatics::SpawnEmitterAtLocation(this, ExplosionEffect, location);
+		if (PS != nullptr)
+		{
+			PS->SetWorldScale3D(FVector(size));
+		}
+	}
+}
+
+void AFPSCharacter::SpawnExplosionLong(float scale)
+{
+	PlayExplosionEffect(scale, this->GetActorLocation() + FVector(150.f, -150.f, 0.f));
+}
+
 void AFPSCharacter::SpawnBomb()
 {
 
@@ -194,3 +252,5 @@ void AFPSCharacter::Garbage()
 {
 	return;
 }
+
+

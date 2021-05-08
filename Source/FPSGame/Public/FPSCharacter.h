@@ -6,7 +6,12 @@
 #include "GameFramework/Character.h"
 #include "FPSAltProjectile.h"
 #include "AFPSBombActor.h"
+#include "UObject/SoftObjectPtr.h"
+#include "Delegate.h"
 #include "FPSCharacter.generated.h"
+
+
+
 
 
 class UInputComponent;
@@ -18,7 +23,9 @@ class AAFPSBombActor;
 class USoundBase;
 class UAnimSequence;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FDelegateName, float, size);
 
+DECLARE_DYNAMIC_DELEGATE_OneParam(FSubDelegateName, float, size);
 UCLASS()
 class AFPSCharacter : public ACharacter
 {
@@ -41,6 +48,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Custom", meta = (AllowPrivateAccess = "true"))
 	TArray<AActor*> ActorsToDestroy;
 
+
 public:
 	AFPSCharacter();
 
@@ -61,6 +69,9 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	UParticleSystem* ExplosionEffect;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Gameplay")
+		class UParticleSystem* ExplosionEffect2;
+
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
 	UAnimSequence* FireAnimation;
@@ -77,13 +88,28 @@ protected:
 	void FireAltRelease();
 
 	UFUNCTION()
+	void PlayExplosionEffect(float size, const FVector& location);
+
+	UFUNCTION()
 	void Garbage(); //does nothing but timer won't work without it
+
+	UFUNCTION()
+		void ChargeDestructionSequence();
 
 	UFUNCTION()
 	void BeginDestructionSequence();
 
 	UFUNCTION()
 	void ActivateDestructionSequence(float _Scale);
+
+	UFUNCTION()
+		void SpawnExplosionClose(float scale);
+
+	UFUNCTION()
+		void SpawnExplosionMedium(float scale);
+
+	UFUNCTION()
+		void SpawnExplosionLong(float scale);
 
 	void SpawnBomb();
 
@@ -96,6 +122,10 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
 	FTimerHandle mCooldown, mCharging;
+
+	float chargeTimeStamp2;
+
+	FDelegateName myDelegate;
 
 
 public:
