@@ -38,6 +38,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	UCameraComponent* CameraComponent;
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Custom", meta = (AllowPrivateAccess = "true"))
+	TArray<AActor*> ActorsToDestroy;
+
 public:
 	AFPSCharacter();
 
@@ -54,6 +57,9 @@ public:
 	/** Sound to play each time we fire */
 	UPROPERTY(EditDefaultsOnly, Category="Gameplay")
 	USoundBase* FireSound;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
+	UParticleSystem* ExplosionEffect;
 
 	/** AnimMontage to play each time we fire */
 	UPROPERTY(EditDefaultsOnly, Category = "Gameplay")
@@ -73,6 +79,12 @@ protected:
 	UFUNCTION()
 	void Garbage(); //does nothing but timer won't work without it
 
+	UFUNCTION()
+	void BeginDestructionSequence();
+
+	UFUNCTION()
+	void ActivateDestructionSequence(float _Scale);
+
 	void SpawnBomb();
 
 	/** Handles moving forward/backward */
@@ -84,6 +96,7 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* InputComponent) override;
 
 	FTimerHandle mCooldown, mCharging;
+
 
 public:
 	/** Returns Mesh1P subobject **/

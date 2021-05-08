@@ -41,6 +41,8 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("FireAlt", IE_Pressed, this, &AFPSCharacter::FireAlt);
 	PlayerInputComponent->BindAction("FireAltRelease", IE_Released, this, &AFPSCharacter::FireAltRelease);
 
+	PlayerInputComponent->BindAction("TimerDelegate", IE_Pressed, this, &AFPSCharacter::BeginDestructionSequence);
+
 	PlayerInputComponent->BindAxis("MoveForward", this, &AFPSCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AFPSCharacter::MoveRight);
 
@@ -50,6 +52,31 @@ void AFPSCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	PlayerInputComponent->BindAction("SpawnBomb", IE_Pressed, this, &AFPSCharacter::SpawnBomb);
 }
 
+void AFPSCharacter::BeginDestructionSequence()
+{
+	FTimerHandle Timer;
+	FTimerDelegate TimerDel;
+	float RandomScale = FMath::RandRange(1.0f, 5.0f);
+
+	TimerDel.BindUFunction(this, FName("ActivateDestructionSequence"), RandomScale);
+
+	UWorld* const World = GetWorld();
+
+	if (World != nullptr)
+	{
+		World->GetTimerManager().SetTimer(Timer, TimerDel, 3.0f, false);
+	}
+}
+
+void AFPSCharacter::ActivateDestructionSequence(float _Scale)
+{
+	if (ActorsToDestroy.Num() == 0) return;
+	uint8 Length = ActorsToDestroy.Num();
+	for (size_t i = 0; i < Length; i++)
+	{
+		
+	}
+}
 
 void AFPSCharacter::Fire()
 {
