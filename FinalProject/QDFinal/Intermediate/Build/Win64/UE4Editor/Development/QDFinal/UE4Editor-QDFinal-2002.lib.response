@@ -1,0 +1,16 @@
+/NOLOGO
+/errorReport:prompt
+/MACHINE:x64
+/SUBSYSTEM:WINDOWS
+/DEF
+/NAME:"UE4Editor-QDFinal-2002.dll"
+/IGNORE:4221
+/NODEFAULTLIB
+"C:\Users\Dyson Little\Desktop\GPR420-Dyson-Quincy\FinalProject\QDFinal\Intermediate\Build\Win64\QDFinalEditor\Development\Engine\SharedPCH.Engine.ShadowErrors.h.obj"
+"C:\Users\Dyson Little\Desktop\GPR420-Dyson-Quincy\FinalProject\QDFinal\Intermediate\Build\Win64\UE4Editor\Development\QDFinal\EnemyAIBlueprint.cpp.obj"
+"C:\Users\Dyson Little\Desktop\GPR420-Dyson-Quincy\FinalProject\QDFinal\Intermediate\Build\Win64\UE4Editor\Development\QDFinal\QDFinal.cpp.obj"
+"C:\Users\Dyson Little\Desktop\GPR420-Dyson-Quincy\FinalProject\QDFinal\Intermediate\Build\Win64\UE4Editor\Development\QDFinal\EnemyAIBlueprint.gen.cpp.obj"
+"C:\Users\Dyson Little\Desktop\GPR420-Dyson-Quincy\FinalProject\QDFinal\Intermediate\Build\Win64\UE4Editor\Development\QDFinal\QDFinal.init.gen.cpp.obj"
+"C:\Users\Dyson Little\Desktop\GPR420-Dyson-Quincy\FinalProject\QDFinal\Intermediate\Build\Win64\UE4Editor\Development\QDFinal\Default.rc2.res"
+/OUT:"C:\Users\Dyson Little\Desktop\GPR420-Dyson-Quincy\FinalProject\QDFinal\Intermediate\Build\Win64\UE4Editor\Development\QDFinal\UE4Editor-QDFinal-2002.lib"
+/INCLUDE:IMPLEMENT_MODULE_QDFinal

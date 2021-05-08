@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "QDFinal",
+			"Path": "C:\\Users\\Dyson Little\\Desktop\\GPR420-Dyson-Quincy\\FinalProject\\QDFinal\\Source\\QDFinal.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "QDFinalEditor",
+			"Path": "C:\\Users\\Dyson Little\\Desktop\\GPR420-Dyson-Quincy\\FinalProject\\QDFinal\\Source\\QDFinalEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

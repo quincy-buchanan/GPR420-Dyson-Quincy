@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\QDFinal.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F3DAB44A-2144-4423-A726-76EBE6E0DAF6}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\QDFinal.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\QDFinalEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Config">
+      <UniqueIdentifier>{7F90AA09-2534-4451-A40A-5A0BE4E30381}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <Filter Include="Source\QDFinal">
+      <UniqueIdentifier>{45157B94-B72D-4A84-A10D-9733949823F1}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\QDFinal\EnemyAIBlueprint.cpp">
+      <Filter>Source\QDFinal</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\QDFinal\EnemyAIBlueprint.h">
+      <Filter>Source\QDFinal</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\QDFinal\EnemyCharacter.cpp">
+      <Filter>Source\QDFinal</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\QDFinal\EnemyCharacter.h">
+      <Filter>Source\QDFinal</Filter>
+    </ClInclude>
+    <ClCompile Include="..\..\Source\QDFinal\MyAIController.cpp">
+      <Filter>Source\QDFinal</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\QDFinal\MyAIController.h">
+      <Filter>Source\QDFinal</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\QDFinal\QDFinal.Build.cs">
+      <Filter>Source\QDFinal</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\QDFinal\QDFinal.cpp">
+      <Filter>Source\QDFinal</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\QDFinal\QDFinal.h">
+      <Filter>Source\QDFinal</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
